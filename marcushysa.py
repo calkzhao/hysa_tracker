@@ -1,3 +1,10 @@
+'''
+Last edited July 18, 2025
+Next steps:
+Add column to see how much in interest I am earning.
+Create graph to visualize.
+'''
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,7 +16,7 @@ goal = 15000
 #convert annual rate to biweekly rate
 biweekly_rate = (1 + annual_rate) ** (1/26) - 1
 biweekly_contribution = 150
-n = 11
+n = 26
 
 #create schedule
 schedule = []
@@ -25,6 +32,7 @@ for i in range(1, n + 1):
         "End Balance": round(balance, 2)
     })
 
+#display the schedule
 df_schedule = pd.DataFrame(schedule)
 print(df_schedule)
 
