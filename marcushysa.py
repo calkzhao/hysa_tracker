@@ -123,3 +123,44 @@ print("*" * 20 + "  28 Month Table " + "*" * 20)
 print(df_goal)
 
 # Next steps: How much would I have to save to hit my goal by 2026?
+# give new parameters
+# parameters
+annual_rate = 0.0365
+starting_balance = 6000
+goal = 15000
+# convert annual rate to monthly rate. 
+monthly_rate = (1 + annual_rate) ** (1/12) - 1 #equation found on google
+monthly_contribution = 720
+n = 12
+
+# create schedule
+schedule_26 = []
+balance = starting_balance
+
+for i in range(1, n + 1):
+    balance *= (1 + monthly_rate)
+    balance += monthly_contribution
+    schedule_26.append({
+        "Month": i,
+        "Contribution": monthly_contribution,
+        "Interest Rate": round(monthly_rate * 100, 5),
+        "End Balance": round(balance, 2)
+    })
+df_goal_2026 = pd.DataFrame(schedule_26)
+
+# add initial
+initial = pd.DataFrame({"Month": 0,
+                        "Contribution": 0,
+                        "Interest Rate": round(monthly_rate * 100, 5),
+                        "End Balance": 6000.00},
+                        index = [0])
+df_goal_2026 = pd.concat([initial, df_goal_2026]).reset_index(drop = True)
+
+# add accumulated column
+df_goal_2026['Accumulated'] = (df_goal_2026['End Balance'] - df_goal_2026['End Balance'].shift(1)) - monthly_contribution
+
+print(df_goal_2026)
+
+# what is the YTD earnings from interest?
+YTD_720 = df_goal_2026['Accumulated'].sum()
+print(YTD_720)
